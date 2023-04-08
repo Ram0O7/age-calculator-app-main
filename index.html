@@ -58,6 +58,9 @@
 
     input {
       height: 35px;
+      font-family: myFirstFont;
+      padding-left: 5px;
+      font-size: 25px;
     }
 
     .age {
@@ -136,15 +139,15 @@
     <div class="form-container">
       <div>
         <span>DAY</span>
-        <input type="number" id="day" min="1" max="31" required>
+        <input type="number" id="day" min="1" max="31" placeholder="DD" required>
       </div>
       <div>
         <span>MONTH</span>
-        <input type="number" id="month" min="1" max="12" required>
+        <input type="number" id="month" min="1" max="12" placeholder="MM" required>
       </div>
       <div>
         <span>YEAR</span>
-        <input type="number" id="year" min="1920" max="2022" required>
+        <input type="number" id="year" min="1920" max="2022" placeholder="YYYY" required>
       </div>
     </div>
     <button type="submit" id="calc-btn"><img src="assets/images/icon-arrow.svg" alt="GO"></button>
