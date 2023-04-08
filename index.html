@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <title>Age calculator</title>
+
+  <style>
+    :root {
+      --Purple: hsl(259, 100%, 65%);
+      --Light-red: hsl(0, 100%, 67%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #ccc;
+    }
+
+    .container {
+      width: 500px;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 12px;
+      border-bottom-right-radius: 30%;
+    }
+
+    .form-container {
+      display: flex;
+      gap: 10px;
+      font-family: sans-serif;
+    }
+
+    .form-container div {
+      display: flex;
+      flex-direction: column;
+      width: 115px;
+    }
+
+    .form-container div span {
+      font-size: 12px;
+      margin: 5px 0;
+    }
+
+    input {
+      height: 35px;
+    }
+
+    .age {
+      font-size: 40px;
+      font-family: sans-serif;
+      margin-top: 40px;
+      font-family: myFirstFont;
+      text-shadow: 0px 1px 3px black;
+    }
+
+    #day:valid,
+    #month:valid,
+    #year:valid,
+    #day:in-range,
+    #month:in-range,
+    #year:in-range {
+      border: 2px solid green;
+    }
+
+    #day:invalid,
+    #month:invalid,
+    #year:invalid,
+    #day:out-of-range,
+    #month:out-of-range,
+    #year:out-of-range {
+      border: 2px solid var(--Light-red);
+    }
+
+    #calc-btn {
+      border: none;
+      background-color: var(--Purple);
+      padding: 5px;
+      margin-top: 20px;
+      border-radius: 50%;
+      float: right;
+      box-shadow: 0px 1px 8px 0px var(--Purple);
+    }
+
+    #years,
+    #months,
+    #days {
+      color: var(--Purple);
+      text-shadow: 0px 1px 3px var(--Purple);
+    }
+
+    @font-face {
+      font-family: myFirstFont;
+      src: url("assets/fonts/Poppins-ExtraBoldItalic.ttf");
+    }
+
+    .error {
+      color: red;
+      font-size: small;
+      font-family: myFirstFont;
+    }
+
+    @media (max-width:760px) {
+      .form-container div{
+       width: 80px;
+      }
+      .container{
+        padding: 25px;
+        width: 90vw;
+        height: 340px;
+      }
+      .age{
+        font-size: 25px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <section class="container">
+    <div class="form-container">
+      <div>
+        <span>DAY</span>
+        <input type="number" id="day" min="1" max="31" required>
+      </div>
+      <div>
+        <span>MONTH</span>
+        <input type="number" id="month" min="1" max="12" required>
+      </div>
+      <div>
+        <span>YEAR</span>
+        <input type="number" id="year" min="1920" max="2022" required>
+      </div>
+    </div>
+    <button type="submit" id="calc-btn"><img src="assets/images/icon-arrow.svg" alt="GO"></button>
+    <div class="age">
+      <h1><span id="years">- -</span> years</h1>
+      <h1><span id="months">- -</span> months</h1>
+      <h1><span id="days">- -</span> days</h1>
+    </div>
+  </section>
+</body>
+
+<script>
+  const calcBtn = document.getElementById('calc-btn')
+  const day = document.getElementById('day')
+  const month = document.getElementById('month')
+  const year = document.getElementById('year')
+  const totalDay = document.getElementById('days')
+  const totalMonth = document.getElementById('months')
+  const totalYear = document.getElementById('years')
+
+  const currentDate = new Date()
+
+  const getUserInput = () => {
+    let birthDate = new Date(`${year.value}-${month.value}-${day.value}`)
+
+    const diffInMs = currentDate - birthDate;
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const msPerYear = msPerDay * 365.25; // average number of days per year
+    const msPerMonth = msPerYear / 12; // average number of days per month
+
+    const years = Math.floor(diffInMs / msPerYear);
+    const months = Math.floor((diffInMs % msPerYear) / msPerMonth);
+    const days = Math.floor((diffInMs % msPerMonth) / msPerDay);
+    totalDay.innerText = ''
+    totalMonth.innerText = ''
+    totalYear.innerText = ''
+    totalDay.innerText = days < 10 ? '0' + days : days
+    totalMonth.innerText = months < 10 ? '0' + months : months
+    totalYear.innerText = years < 10 ? '0' + years : years
+  }
+
+  function throwError() {
+    const errorEl = document.createElement('span')
+    errorEl.innerText = "Error! Fix the date dude."
+    errorEl.classList.add('error')
+    document.querySelector('.container').insertBefore(errorEl,document.querySelector('.container').children[0])
+    setTimeout(() => {
+      errorEl.style.display = 'none'
+    }, 1000)
+  }
+
+  calcBtn.addEventListener("click", () => {
+    day.validity && month.validity.valid && year.validity.valid ? getUserInput() : throwError();
+  })
+
+
+</script>
+
+</html>
